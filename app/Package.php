@@ -1,0 +1,81 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Package extends Model
+{
+    //
+    protected $fillable = [
+        'boxType',
+        'packageType', 
+        'productSize1',
+        'productSize2',
+        'productSize3',
+        'tripodSize1',
+        'tripodSize2',
+        'bracket',
+        'piercing',
+        'colorRing',
+        'printQuantity1',
+        'printQuantity2',
+        'material1',
+        'material2',
+        'printColor1',
+        'printColor2',
+        'printsBook',
+        'status',
+        'thickness',
+        'corrugatedBoard',
+        'Formedabox',
+        'Lamination',
+        'selLamination1',
+        'selLamination2',
+        'HandRope',
+        'selHandRope',
+        'Handle',
+        'StampingSliver',
+        'StampingSliverL',
+        'StampingSliverW',
+        'StampingGold',
+        'StampingGoldL',
+        'StampingGoldW',
+        'PVCWindows',
+        'PVCWindowsL',
+        'PVCWindowsW',
+        'Embossed',
+        'EmbossedL',
+        'EmbossedW',
+        'SpotUV',
+        'selSpotUV1',
+        'SpotUVL',
+        'SpotUVW',
+        'Varnishing',
+
+        'selText',
+
+        'selVarnishing',
+        'outerPrinting',
+        'outerMaterial1',
+        'outerMaterial2',
+        'outerPrintingcolor1',
+        'innerPrinting',
+        'innerMaterial1',
+        'innerMaterial2',
+        'innerPrintingcolor1',
+        'LinenTexture',
+        'Indentation',
+        'selIndentation1',
+        'selIndentation2',
+        'Easytearline',
+        'selEasytearline',
+        'Code',
+        'selCode1',
+        'selCode2',
+        'PunchHole',
+        'selPunchHole',
+        'selSpotUV2',
+        'status'
+    ];
+}
