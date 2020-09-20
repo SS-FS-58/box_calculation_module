@@ -276,8 +276,8 @@ class HomeController extends Controller
             $c_criteria = $printplatepapersize["0"]["0"] * (($flat_size1 + $bleedSize)*$number2+$fixedSize + $bleedSize) / ($number1 * $number2);
             $fomula_txt .='case 2: '.intval($c_criteria).' = '.$printplatepapersize["0"]["0"].' * '.(($flat_size1)*$number2+$fixedSize+ 2*$bleedSize).' / '. ($number1 * $number2).'<br>';
             if( $max_criteria > $c_criteria){
-                $max_width = ($flat_size1) * $number1 + 2*$bleedSize;
-                $max_height = ($flat_size2) * $number2 + $fixedSize+ 2*$bleedSize;
+                $max_width = ($flat_size2) * $number1 + 2*$bleedSize;
+                $max_height = ($flat_size1) * $number2 + $fixedSize+ 2*$bleedSize;
                 $max_case = 2;
                 $max_criteria = $c_criteria;
                 $max_number1 = $number1;
@@ -316,8 +316,8 @@ class HomeController extends Controller
             $c_criteria = $printplatepapersize["1"]["0"] * (($flat_size1)*$number2+$fixedSize + 2*$bleedSize) / ($number1 * $number2);
             $fomula_txt .='case 4: '.intval($c_criteria).' = '.$printplatepapersize["1"]["0"].' * '.(($flat_size1)*$number2+$fixedSize+ 2*$bleedSize).' / '. ($number1 * $number2).'<br>';
             if( $max_criteria > $c_criteria){
-                $max_width = ($flat_size1) * $number1 + 2*$bleedSize;
-                $max_height = ($flat_size2) * $number2 + $fixedSize+ 2*$bleedSize;
+                $max_width = ($flat_size2) * $number1 + 2*$bleedSize;
+                $max_height = ($flat_size1) * $number2 + $fixedSize+ 2*$bleedSize;
                 $max_case = 4;
                 $max_criteria = $c_criteria;
                 $max_number1 = $number1;
