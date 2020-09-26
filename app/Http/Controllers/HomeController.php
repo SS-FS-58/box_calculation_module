@@ -473,6 +473,7 @@ class HomeController extends Controller
         $quantity = intval($input['printQuantity1']);
         $material1 = $input['material1'];
         $material2 = intval($input['material2']);
+        $material3 = intval($input['material3']);
         
         $gludeSize = intval($input['gluedSize']);
         $flapSize = intval($input['flapSize']);
@@ -490,6 +491,8 @@ class HomeController extends Controller
         // Printing setting parameters
         $pintingbelow3000 = $input['pintingbelow3000'];
         $printingper1000 = $input['printingper1000'];
+        $brownkindprice = $input['brownkindprice'];
+        $whitekindprice = $input['whitekindprice'];
 
         // Binding setting parameters
         $glossLamination = (float)$input['glossLamination'];
@@ -501,6 +504,7 @@ class HomeController extends Controller
         $embossDebossed = (float)$input['embossDebossed'];
         $texturedEffect = (float)$input['texturedEffect'];
         $foilStamping = (float)$input['foilStamping'];
+        $gluedcost = (float)$input['gluedcost'];
 
         //Binding User setting
 
@@ -513,6 +517,7 @@ class HomeController extends Controller
         $embossDebossed_C = $input['embossDebossed_C'];
         $texturedEffect_C = $input['texturedEffect_C'];
         $foilStamping_C = $input['foilStamping_C'];
+        $gluedcost_C = $input['gluedcost_C'];
 
         $flat_size1 = $L + $H * 4 + $gludeSize + 2 * $bleedSize;
         $flat_size2 = ($H + $W)*2 + $H + 2 * $bleedSize;
@@ -637,9 +642,12 @@ class HomeController extends Controller
                 $printpapersizeHeight = $max_criteria / $printpapersizeWidth;
             }
             $printpapersize = $max_criteria * ($max_number1 * $max_number2);
-            $printpaperCost = intval($printpapersize / 1000000 * $paper_quantity * $paperCost *  $material2 / 1000);
 
-            $fomula_txt .='Paper cost: '.($printpapersizeWidth/1000).' * '.($max_height/1000).' * '.$paper_quantity.' * '. $paperCost. ' * '.($material2 / 1000).' = '.$printpaperCost.'<br>';
+            $kindCost = $material3==1?$brownkindprice:$whitekindprice;
+
+            $printpaperCost = intval($printpapersize / 1000000 * $paper_quantity * ($paperCost  *  $material2 / 1000 + $kindCost));
+
+            $fomula_txt .='Paper cost: '.($printpapersizeWidth/1000).' * '.($max_height/1000).' * '.$paper_quantity.' * ('. $paperCost.' * '.($material2 / 1000).'+'.$kindCost.') = '.$printpaperCost.'<br>';
 
             // Insert Printing price.
             $printingPrice = $pintingbelow3000;
@@ -653,48 +661,53 @@ class HomeController extends Controller
             $Binding_txt = '';
             $Binding_price = 0;
             if($glossLamination_C==1){
-                $Binding_price += intval($glossLamination * $totalArea);
+                $Binding_price += round($glossLamination * $totalArea);
                 $Binding_txt.= $Binding_price.'(Gloss),';
             }
             if($mattLamination_C==1){
-                $addedPrice = intval($mattLamination * $totalArea);
+                $addedPrice = round($mattLamination * $totalArea);
                 $Binding_price += $addedPrice;
                 $Binding_txt.= $addedPrice.'(Matt),';
             }
             if($aqueousVarnishing_C==1){
-                $addedPrice = intval($aqueousVarnishing * $totalArea);
+                $addedPrice = round($aqueousVarnishing * $totalArea);
                 $Binding_price += $addedPrice;
                 $Binding_txt.= $addedPrice.'(Aqueous),';
             }
             if($uvCoating_C==1){
-                $addedPrice = intval($uvCoating * $totalArea);
+                $addedPrice = round($uvCoating * $totalArea);
                 $Binding_price += $addedPrice;
                 $Binding_txt.= $addedPrice.'(UV),';
             }
             if($dieCut_C==1){
-                $addedPrice = intval($dieCut * $paper_quantity);
+                $addedPrice = round($dieCut * $paper_quantity);
                 $Binding_price += $addedPrice;
                 $Binding_txt.= $addedPrice.'(Diecut),';
             }
             if($spotUV_C==1){
-                $addedPrice = intval($spotUV * $quantity);
+                $addedPrice = round($spotUV * $quantity);
                 $Binding_price += $addedPrice;
                 $Binding_txt.= $addedPrice.'(SpotUV),';
             }
             if($embossDebossed_C==1){
-                $addedPrice = intval($embossDebossed * $paper_quantity);
+                $addedPrice = round($embossDebossed * $paper_quantity);
                 $Binding_price += $addedPrice;
                 $Binding_txt.= $addedPrice.'(Emboss),';
             }
             if($texturedEffect_C==1){
-                $addedPrice = intval($texturedEffect * $totalArea);
+                $addedPrice = round($texturedEffect * $totalArea);
                 $Binding_price += $addedPrice;
                 $Binding_txt.= $addedPrice.'(Textured),';
             }
             if($foilStamping_C==1){
-                $addedPrice = intval($foilStamping * $quantity);
+                $addedPrice = round($foilStamping * $quantity);
                 $Binding_price += $addedPrice;
                 $Binding_txt.= $addedPrice.'(Foil),';
+            }
+            if($gluedcost_C==1){
+                $addedPrice = round($gluedcost * $totalArea);
+                $Binding_price += $addedPrice;
+                $Binding_txt.= $addedPrice.'(Glued),';
             }
             $fomula_txt .='Binding cost: '.$Binding_price . '= '.$Binding_txt.'<br>';
 

@@ -36,8 +36,12 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <label for="sel1">Material*gram weight:</label>
+                        <label for="sel1">Materialgram weight:</label>
                     </div>
+                    <div class="col">
+                        <label for="sel1">gram per square:</label>
+                    </div>
+                    
                 </div>
                 <div class="row">
                     <div class="col">
@@ -52,10 +56,28 @@
                     </div>
                     <div class="col">
                         <div class="form-group">
-                            <select class="form-control" id="Material2" name="material2">
+                            <select class="form-control" id="material2" name="material2">
                                 <!-- <option value="230">230</option> -->
                                 <option selected value="250">250</option>
                                 <option value="300">300</option>
+                                <!-- <option value="350">350</option> -->
+                            </select>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="sel1">Kinds :</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <select class="form-control" id="material3" name="material3">
+                                <!-- <option value="230">230</option> -->
+                                <option selected value="1">Flute and inner brown color paper</option>
+                                <option value="2">Flute and inner white color paper</option>
                                 <!-- <option value="350">350</option> -->
                             </select>
                         </div>
@@ -128,6 +150,15 @@
                             <input type="hidden" name="foilStamping_C" value="0"/>
                             <input type="checkbox" class="custom-control-input" name="foilStamping_C" id="foilStamping_C" value="1">
                             <label class="custom-control-label" for="foilStamping_C">Foil Stamping</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                        <div class="custom-control custom-checkbox">
+                            <input type="hidden" name="gluedcost_C" value="0"/>
+                            <input type="checkbox" class="custom-control-input" name="gluedcost_C" id="gluedcost_C" value="1">
+                            <label class="custom-control-label" for="gluedcost_C">Glued Cost RMB</label>
                         </div>
                     </div>
                 </div>
@@ -221,6 +252,22 @@
                             <input type="text" value="100" class="form-control" id="printingper1000" name="printingper1000">
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="sel1">Flute and inner brown color paper RMB:</label>
+                        </div>
+                        <div class="col">
+                            <label for="sel1">Flute and inner white color paper RMB: </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <input type="text" value="1.50" class="form-control" id="brownkindprice" name="brownkindprice">
+                        </div>
+                        <div class="col">
+                            <input type="text" value="2.00" class="form-control" id="whitekindprice" name="whitekindprice">
+                        </div>
+                    </div>
                     <h4>Binding Setting</h4>
                     <div class="row">
                         <div class="col">
@@ -288,6 +335,16 @@
                             <input type="text" value="0.10" class="form-control" id="foilStamping" name="foilStamping">
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                            <label for="sel1">Glued Cost :</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <input type="text" value="1.00" class="form-control" id="gluedcost" name="gluedcost">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -320,7 +377,7 @@
         // alert('okay GC');
         console.log('please ajax!')
         $.ajax({
-            url: '{{ route("postpaperbox") }}',
+            url: '{{ route("postmailerbox") }}',
             method:"POST",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
