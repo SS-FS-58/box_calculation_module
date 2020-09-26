@@ -222,7 +222,28 @@ class HomeController extends Controller
         
         $paperwastageNumber = intval($input['paperwastageNumber']);
         $paperCost = intval($input['paperCost']);
-        
+        // Binding setting parameters
+        $glossLamination = $input['glossLamination'];
+        $mattLamination = $input['mattLamination'];
+        $aqueousVarnishing = $input['aqueousVarnishing'];
+        $uvCoating = $input['uvCoating'];
+        $dieCut = $input['dieCut'];
+        $spotUV = $input['spotUV'];
+        $embossDebossed = $input['embossDebossed'];
+        $texturedEffect = $input['texturedEffect'];
+        $foilStamping = $input['foilStamping'];
+
+        //Binding User setting
+
+        $glossLamination_C = $input['glossLamination_C'];
+        $mattLamination_C = $input['mattLamination_C'];
+        $aqueousVarnishing_C = $input['aqueousVarnishing_C'];
+        $uvCoating_C = $input['uvCoating_C'];
+        $dieCut_C = $input['dieCut_C'];
+        $spotUV_C = $input['spotUV_C'];
+        $embossDebossed_C = $input['embossDebossed_C'];
+        $texturedEffect_C = $input['texturedEffect_C'];
+        $foilStamping_C = $input['foilStamping_C'];
 
         $flat_size1 = ($L + $W) * 2 + $gludeSize + 2 * $bleedSize;
         $flat_size2 = ($H + $W + $W) + 2 * $flapSize + 2 * $bleedSize;
@@ -350,12 +371,18 @@ class HomeController extends Controller
             $returncost = intval($printpapersize / 1000000 * $paper_quantity * $paperCost *  $material2 / 1000);
 
             $fomula_txt .='Final cost: '.($printpapersizeWidth/1000).' * '.($max_height/1000).' * '.$paper_quantity.' * '. $paperCost. ' * '.($material2 / 1000).' = '.$returncost.'<br>';
+
+            // Insert Printing price.
+
             $fomula_txt .=`</p>
+
+
             </div>`;
             $data = ["success"=>'true'];
 
             $data['cost'] = $returncost;
             $data['formula'] = $fomula_txt;
+
             return response()->json($fomula_txt)->header('Content-Type', 'text/html');
             // return response()->json($data)->header('Access-Control-Allow-Origin', '*');
             // return view('paperbox')->with('data',$data);

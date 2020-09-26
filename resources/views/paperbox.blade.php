@@ -61,6 +61,76 @@
                         </div>
                     </div>
                 </div>
+                <h4>Binding</h4>
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                        <div class="custom-control custom-checkbox">
+                            <input type="hidden" name="glossLamination_C" value="0"/>
+                            <input type="checkbox" class="custom-control-input" name="glossLamination_C" id="glossLamination_C" value="1">
+                            <label class="custom-control-label" for="glossLamination_C">Gloss Lamination</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                        <div class="custom-control custom-checkbox">
+                            <input type="hidden" name="mattLamination_C" value="0"/>
+                            <input type="checkbox" class="custom-control-input" name="mattLamination_C" id="mattLamination_C" value="1">
+                            <label class="custom-control-label" for="mattLamination_C">Matt Lamination</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                        <div class="custom-control custom-checkbox">
+                            <input type="hidden" name="aqueousVarnishing_C" value="0"/>
+                            <input type="checkbox" class="custom-control-input" name="aqueousVarnishing_C" id="aqueousVarnishing_C" value="1">
+                            <label class="custom-control-label" for="aqueousVarnishing_C">Aqueous Varnishing</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                        <div class="custom-control custom-checkbox">
+                            <input type="hidden" name="uvCoating_C" value="0"/>
+                            <input type="checkbox" class="custom-control-input" name="uvCoating_C" id="uvCoating_C" value="1">
+                            <label class="custom-control-label" for="uvCoating_C">UV coating RMB</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                        <div class="custom-control custom-checkbox">
+                            <input type="hidden" name="dieCut_C" value="0"/>
+                            <input type="checkbox" class="custom-control-input" name="dieCut_C" id="dieCut_C" value="1">
+                            <label class="custom-control-label" for="dieCut_C">Die cut RMB</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                        <div class="custom-control custom-checkbox">
+                            <input type="hidden" name="spotUV_C" value="0"/>
+                            <input type="checkbox" class="custom-control-input" name="spotUV_C" id="spotUV_C" value="1">
+                            <label class="custom-control-label" for="spotUV_C">Spot UV RMB</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                        <div class="custom-control custom-checkbox">
+                            <input type="hidden" name="embossDebossed_C" value="0"/>
+                            <input type="checkbox" class="custom-control-input" name="embossDebossed_C" id="embossDebossed_C" value="1">
+                            <label class="custom-control-label" for="embossDebossed_C">Emboss Debossed</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                        <div class="custom-control custom-checkbox">
+                            <input type="hidden" name="texturedEffect_C" value="0"/>
+                            <input type="checkbox" class="custom-control-input" name="texturedEffect_C" id="texturedEffect_C" value="1">
+                            <label class="custom-control-label" for="texturedEffect_C">Textured Effect</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                        <div class="custom-control custom-checkbox">
+                            <input type="hidden" name="foilStamping_C" value="0"/>
+                            <input type="checkbox" class="custom-control-input" name="foilStamping_C" id="foilStamping_C" value="1">
+                            <label class="custom-control-label" for="foilStamping_C">Foil Stamping</label>
+                        </div>
+                    </div>
+                </div>
                 <button id="submit" type="submit" class="btn btn-primary mt-3">Self quotation</button> 
             </div>
             <div class="col-lg-6 row" >
@@ -132,6 +202,73 @@
                         </div>
                         <div class="col">
                             <input type="text" value="7" class="form-control" id="paperCost" name="paperCost">
+                        </div>
+                    </div>
+                    <h4>Binding Setting</h4>
+                    <div class="row">
+                        <div class="col">
+                            <label for="sel1">Gloss Lamination RMB:</label>
+                        </div>
+                        <div class="col">
+                            <label for="sel1">Matt Lamination RMB: </label>
+                        </div>
+                        <div class="col">
+                            <label for="sel1">Aqueous Varnishing RMB: </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <input type="text" value="0.60" class="form-control" id="glossLamination" name="glossLamination">
+                        </div>
+                        <div class="col">
+                            <input type="text" value="0.60" class="form-control" id="mattLamination" name="mattLamination">
+                        </div>
+                        <div class="col">
+                            <input type="text" value="0.30" class="form-control" id="aqueousVarnishing" name="aqueousVarnishing">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="sel1">UV coating RMB:</label>
+                        </div>
+                        <div class="col">
+                            <label for="sel1">Die cut RMB:</label>
+                        </div>
+                        <div class="col">
+                            <label for="sel1">Spot UV RMB:</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <input type="text" value="0.60" class="form-control" id="uvCoating" name="uvCoating">
+                        </div>
+                        <div class="col">
+                            <input type="text" value="0.10" class="form-control" id="dieCut" name="dieCut">
+                        </div>
+                        <div class="col">
+                            <input type="text" value="0.10" class="form-control" id="spotUV" name="spotUV">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="sel1">Emboss Debossed:</label>
+                        </div>
+                        <div class="col">
+                            <label for="sel1">Textured Effect:</label>
+                        </div>
+                        <div class="col">
+                            <label for="sel1">Foil Stamping:</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <input type="text" value="0.10" class="form-control" id="embossDebossed" name="embossDebossed">
+                        </div>
+                        <div class="col">
+                            <input type="text" value="0.60" class="form-control" id="texturedEffect" name="texturedEffect">
+                        </div>
+                        <div class="col">
+                            <input type="text" value="0.10" class="form-control" id="foilStamping" name="foilStamping">
                         </div>
                     </div>
                 </div>
