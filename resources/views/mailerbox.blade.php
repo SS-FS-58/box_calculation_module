@@ -2,7 +2,7 @@
 @section('content')
 
 <!-- <div class="container"> -->
-    <form action="/paperbox" method="post">
+    <form action="/mailerbox" method="post">
         @csrf
         <div class="container-fluid row m-0 p-0">
             <div class="col-lg-6">
