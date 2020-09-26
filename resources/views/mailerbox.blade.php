@@ -14,13 +14,13 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <input type="text" value="100" class="form-control" id="productSize1" name="productSize1">
+                        <input type="text" value="200" class="form-control" id="productSize1" name="productSize1">
                     </div>
                     <div class="col">
-                        <input type="text" value="50" class="form-control" id="productSize2" name="productSize2">
+                        <input type="text" value="150" class="form-control" id="productSize2" name="productSize2">
                     </div>
                     <div class="col">
-                        <input type="text" value="150" class="form-control" id="productSize3" name="productSize3">
+                        <input type="text" value="50" class="form-control" id="productSize3" name="productSize3">
                     </div>
                 </div>
                 <div class="row">
@@ -44,19 +44,19 @@
                         <div class="form-group">
                             <select class="form-control" id="Material1" name="material1">
                                 <option selected value="16">SBS</option>
-                                <option value="17">Kraft Paper</option>
+                                <!-- <option value="17">Kraft Paper</option>
                                 <option value="14">C2S</option>
-                                <option value="278">CCNB</option>
+                                <option value="278">CCNB</option> -->
                             </select>
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             <select class="form-control" id="Material2" name="material2">
-                                <option value="230">230</option>
+                                <!-- <option value="230">230</option> -->
                                 <option selected value="250">250</option>
                                 <option value="300">300</option>
-                                <option value="350">350</option>
+                                <!-- <option value="350">350</option> -->
                             </select>
                         </div>
                     </div>
@@ -152,7 +152,7 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <input type="text" value="15" class="form-control" id="gluedSize" name="gluedSize">
+                            <input type="text" value="30" class="form-control" id="gluedSize" name="gluedSize">
                         </div>
                         <div class="col">
                             <input type="text" value="15" class="form-control" id="flapSize" name="flapSize">

@@ -60,5 +60,10 @@ Route::get('/paperbox','HomeController@showPaperbox')->middleware('auth')->name(
 
 Route::post('/paperbox','HomeController@storePaperbox')->middleware('auth')->name('postpaperbox');
 
+Route::get('/mailerbox','HomeController@showMailerbox')->middleware('auth')->name('getmailerbox');
+
+Route::post('/mailerbox','HomeController@storeMailerbox')->middleware('auth')->name('postmailerbox');
+
+
 Route::get('/waleng','HomeController@showWaleng')->name('getwaleng');
 Route::post('/waleng','HomeController@storeWaleng')->name('postwaleng');
