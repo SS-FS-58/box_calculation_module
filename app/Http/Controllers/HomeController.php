@@ -264,8 +264,6 @@ class HomeController extends Controller
                 $fumula_maximum_txt = 'Optimized result Case 1 : '.$number1 .' * '.$number2.' = '.($number1 * $number2).'  in '.$printplatepapersize["0"]["0"].' * '. $max_height.'<br>';
                 $fumula_maximum_txt .= 'Paper plate width: '.$flat_size1.' * '.$number1.' + 2 * '.$bleedSize.' = '.$max_width.'<br>';
                 $fumula_maximum_txt .= 'Paper plate height: '.$flat_size2.' * '.$number2.' + 2 * '.$bleedSize.' + '.$fixedSize.' = '.$max_height.'<br>';
-                
-
             }
         // case 12:
         $number1 = floor(($printplatepapersize["0"]["0"] - 2 * $bleedSize)/($flat_size2 + $bleedSize));
