@@ -185,6 +185,14 @@ class HomeController extends Controller
         $data = PolySetting::latest()->first();
         return view('mailerbox' ,['data'=>$data]);
     }
+    public function showShippingbox(){
+        $data = PolySetting::latest()->first();
+        return view('shippingbox' ,['data'=>$data]);
+    }
+    public function showRigidbox(){
+        $data = PolySetting::latest()->first();
+        return view('rigidbox' ,['data'=>$data]);
+    }
     
 
     public function storeBubble(Request $request){
@@ -512,12 +520,554 @@ class HomeController extends Controller
         $mattLamination_C = $input['mattLamination_C'];
         $aqueousVarnishing_C = $input['aqueousVarnishing_C'];
         $uvCoating_C = $input['uvCoating_C'];
-        $dieCut_C = $input['dieCut_C'];
+        $dieCut_C = 1;//$input['dieCut_C'];
         $spotUV_C = $input['spotUV_C'];
         $embossDebossed_C = $input['embossDebossed_C'];
         $texturedEffect_C = $input['texturedEffect_C'];
         $foilStamping_C = $input['foilStamping_C'];
-        $gluedcost_C = $input['gluedcost_C'];
+        $gluedcost_C = 1;//$input['gluedcost_C'];
+
+        $flat_size1 = $L + $H * 4 + $gludeSize + 2 * $bleedSize;
+        $flat_size2 = ($H + $W)*2 + $H + 2 * $bleedSize;
+
+        $fomula_txt .='Die Cut Width (mm):  '.$L.' + '.$H.' * 4 + '.$gludeSize.' + 2 * '.$bleedSize.' = '.$flat_size1.'<br>';
+        $fomula_txt .='Die Cut Height(mm):  ('.$H.' + '.$W.')*2 + '.$H.' + 2 * '.$bleedSize.' = '.$flat_size2.'<br>';
+        
+        // case 1: 889*658
+        $fumula_maximum_txt = '';
+        $printplatepapersize = [
+            "0"=>[
+                "0" => $print1PaperSizeW,
+                "1" => $print1PaperSizeH
+            ],
+            "1" =>[
+                "0" => $print2PaperSizeW,
+                "1" => $print2PaperSizeH
+            ]
+            ];
+        $max_case = 0;
+        $max_number1 = 0;
+        $max_number2 = 0;
+        $max_criteria = $printplatepapersize["0"]["0"] * $printplatepapersize["0"]["1"];
+        // case 11:
+        $number1 = floor(($printplatepapersize["0"]["0"] - 2 * $bleedSize)/($flat_size1));
+        $number2 = floor(($printplatepapersize["0"]["1"] - $fixedSize  - 2 * $bleedSize)/($flat_size2));
+        if($number1 == 0 || $number2 == 0)
+            $c_criteria = 9999999999;
+        else
+            $c_criteria = $printplatepapersize["0"]["0"] * (($flat_size2 + $bleedSize)*$number2+$fixedSize + $bleedSize) / ($number1 * $number2);
+            $fomula_txt .='case 1: '.intval($c_criteria).' = '.$printplatepapersize["0"]["0"].' * '.(($flat_size2)*$number2+$fixedSize+ 2*$bleedSize).' / '. ($number1 * $number2).'<br>';
+            if( $max_criteria > $c_criteria){
+                $max_width = ($flat_size1) * $number1 + 2*$bleedSize;
+                $max_height = ($flat_size2) * $number2 + $fixedSize+ 2*$bleedSize;
+                $max_case = 1;
+                $max_criteria = $c_criteria;
+                $max_number1 = $number1;
+                $max_number2 = $number2;
+                $fumula_maximum_txt = 'Optimized result Case 1 : '.$number1 .' * '.$number2.' = '.($number1 * $number2).'  in '.$printplatepapersize["0"]["0"].' * '. $max_height.'<br>';
+                $fumula_maximum_txt .= 'Paper plate width: '.$flat_size1.' * '.$number1.' + 2 * '.$bleedSize.' = '.$max_width.'<br>';
+                $fumula_maximum_txt .= 'Paper plate height: '.$flat_size2.' * '.$number2.' + 2 * '.$bleedSize.' + '.$fixedSize.' = '.$max_height.'<br>';
+            }
+        // case 12:
+        $number1 = floor(($printplatepapersize["0"]["0"] - 2 * $bleedSize)/($flat_size2 + $bleedSize));
+        $number2 = floor(($printplatepapersize["0"]["1"] - $fixedSize  - 2 * $bleedSize)/($flat_size1));
+        if($number1 == 0 || $number2 == 0)
+            $c_criteria = 9999999999;
+        else
+            $c_criteria = $printplatepapersize["0"]["0"] * (($flat_size1 + $bleedSize)*$number2+$fixedSize + $bleedSize) / ($number1 * $number2);
+            $fomula_txt .='case 2: '.intval($c_criteria).' = '.$printplatepapersize["0"]["0"].' * '.(($flat_size1)*$number2+$fixedSize+ 2*$bleedSize).' / '. ($number1 * $number2).'<br>';
+            if( $max_criteria > $c_criteria){
+                $max_width = ($flat_size2) * $number1 + 2*$bleedSize;
+                $max_height = ($flat_size1) * $number2 + $fixedSize+ 2*$bleedSize;
+                $max_case = 2;
+                $max_criteria = $c_criteria;
+                $max_number1 = $number1;
+                $max_number2 = $number2;
+                $fumula_maximum_txt = 'Optimized result Case 2 : '.$number1 .' * '.$number2.' = '.($number1 * $number2).'  in '.$printplatepapersize["0"]["0"].' * '. $max_height.'<br>';
+                $fumula_maximum_txt .= 'Paper plate width: '.$flat_size2.' * '.$number1.' + 2 * '.$bleedSize.' = '.$max_width.'<br>';
+                $fumula_maximum_txt .= 'Paper plate height: '.$flat_size1.' * '.$number2.' + 2 * '.$bleedSize.' + '.$fixedSize.' = '.$max_height.'<br>';
+                
+            }
+        // case 21:
+        $number1 = floor(($printplatepapersize["1"]["0"] - 2 * $bleedSize)/($flat_size1));
+        $number2 = floor(($printplatepapersize["1"]["1"] - $fixedSize - 2 * $bleedSize)/($flat_size2));
+        if($number1 == 0 || $number2 == 0)
+            $c_criteria = 9999999999;
+        else
+            $c_criteria = $printplatepapersize["1"]["0"] * (($flat_size2 + $bleedSize)*$number2+$fixedSize + $bleedSize) / ($number1 * $number2);
+            $fomula_txt .='case 3: '.intval($c_criteria).' = '.$printplatepapersize["1"]["0"].' * '.(($flat_size2)*$number2+$fixedSize+ 2*$bleedSize).' / '. ($number1 * $number2).'<br>';
+            if( $max_criteria > $c_criteria){
+                $max_width = ($flat_size1) * $number1 + 2*$bleedSize;
+                $max_height = ($flat_size2) * $number2 + $fixedSize+ 2*$bleedSize;
+                $max_case = 3;
+                $max_criteria = $c_criteria;
+                $max_number1 = $number1;
+                $max_number2 = $number2;
+                $fumula_maximum_txt = 'Optimized result Case 3 : '.$number1 .' * '.$number2.' = '.($number1 * $number2).'  in '.$printplatepapersize["1"]["0"].' * '. $max_height.'<br>';
+                $fumula_maximum_txt .= 'Paper plate width: '.$flat_size1.' * '.$number1.' + 2 * '.$bleedSize.' = '.$max_width.'<br>';
+                $fumula_maximum_txt .= 'Paper plate height: '.$flat_size2.' * '.$number2.' + 2 * '.$bleedSize.' + '.$fixedSize.' = '.$max_height.'<br>';
+                
+            }
+        // case 22:
+        $number1 = floor(($printplatepapersize["1"]["0"] - 2 * $bleedSize)/($flat_size2));
+        $number2 = floor(($printplatepapersize["1"]["1"] - $fixedSize - 2 * $bleedSize)/($flat_size1));
+        if($number1 == 0 || $number2 == 0)
+            $c_criteria = 9999999999;
+        else
+            $c_criteria = $printplatepapersize["1"]["0"] * (($flat_size1)*$number2+$fixedSize + 2*$bleedSize) / ($number1 * $number2);
+            $fomula_txt .='case 4: '.intval($c_criteria).' = '.$printplatepapersize["1"]["0"].' * '.(($flat_size1)*$number2+$fixedSize+ 2*$bleedSize).' / '. ($number1 * $number2).'<br>';
+            if( $max_criteria > $c_criteria){
+                $max_width = ($flat_size2) * $number1 + 2*$bleedSize;
+                $max_height = ($flat_size1) * $number2 + $fixedSize+ 2*$bleedSize;
+                $max_case = 4;
+                $max_criteria = $c_criteria;
+                $max_number1 = $number1;
+                $max_number2 = $number2;
+                $fumula_maximum_txt = 'Optimized result Case 4 : '.$number1 .' * '.$number2.' = '.($number1 * $number2).'  in '.$printplatepapersize["1"]["0"].' * '. $max_height.'<br>';
+                $fumula_maximum_txt .= 'Paper plate width: '.$flat_size2.' * '.$number1.' + 2 * '.$bleedSize.' = '.$max_width.'<br>';
+                $fumula_maximum_txt .= 'Paper plate height: '.$flat_size1.' * '.$number2.' + 2 * '.$bleedSize.' + '.$fixedSize.' = '.$max_height.'<br>';
+                
+            }
+
+        
+        if($max_number1 == 0 || $max_number2 == 0){
+            $data = ["success"=>'false'];
+            return response()->json($data);
+        }else{
+            $fomula_txt .= $fumula_maximum_txt;
+            $paper_quantity = ceil($quantity / ($max_number1 * $max_number2));
+            $fomula_txt .='Paper Quantity :  '.$quantity.' / '.($max_number1 * $max_number2).' = '. $paper_quantity;
+            if ($quantity <= 5000){
+                $paper_quantity += $paperwastageNumber;
+                $fomula_txt .= ' + '.$paperwastageNumber.' = '.$paper_quantity;
+            }
+            $fomula_txt .='<br>';    
+            if($max_case > 2) {
+                $printpapersizeWidth = $printplatepapersize["1"]["0"];
+                $printpapersizeHeight = $max_criteria / $printpapersizeWidth;
+            }else{
+                $printpapersizeWidth = $printplatepapersize["0"]["0"];
+                $printpapersizeHeight = $max_criteria / $printpapersizeWidth;
+            }
+            $printpapersize = $max_criteria * ($max_number1 * $max_number2);
+
+            $kindCost = $material3==1?$brownkindprice:$whitekindprice;
+
+            $printpaperCost = intval($printpapersize / 1000000 * $paper_quantity * ($paperCost  *  $material2 / 1000 + $kindCost));
+
+            $fomula_txt .='Paper cost: '.($printpapersizeWidth/1000).' * '.($max_height/1000).' * '.$paper_quantity.' * ('. $paperCost.' * '.($material2 / 1000).'+'.$kindCost.') = '.$printpaperCost.'<br>';
+
+            // Insert Printing price.
+            $printingPrice = $pintingbelow3000;
+            if($paper_quantity > 3000){
+                $printingPrice += ceil(($paper_quantity-3000)/1000) * $printingper1000;
+            }
+            $fomula_txt .='Printing cost: '.$printingPrice.'<br>';
+            // calculation total area
+            $totalArea = floatval($printpapersize / 1000000 * $paper_quantity);
+            $fomula_txt .='Total Area: '.$totalArea.' m^2 <br>';
+            $Binding_txt = '';
+            $Binding_price = 0;
+            if($glossLamination_C==1){
+                $Binding_price += round($glossLamination * $totalArea);
+                $Binding_txt.= $Binding_price.'(Gloss),';
+            }
+            if($mattLamination_C==1){
+                $addedPrice = round($mattLamination * $totalArea);
+                $Binding_price += $addedPrice;
+                $Binding_txt.= $addedPrice.'(Matt),';
+            }
+            if($aqueousVarnishing_C==1){
+                $addedPrice = round($aqueousVarnishing * $totalArea);
+                $Binding_price += $addedPrice;
+                $Binding_txt.= $addedPrice.'(Aqueous),';
+            }
+            if($uvCoating_C==1){
+                $addedPrice = round($uvCoating * $totalArea);
+                $Binding_price += $addedPrice;
+                $Binding_txt.= $addedPrice.'(UV),';
+            }
+            if($dieCut_C==1){
+                $addedPrice = round($dieCut * $paper_quantity);
+                $Binding_price += $addedPrice;
+                $Binding_txt.= $addedPrice.'(Diecut),';
+            }
+            if($spotUV_C==1){
+                $addedPrice = round($spotUV * $quantity);
+                $Binding_price += $addedPrice;
+                $Binding_txt.= $addedPrice.'(SpotUV),';
+            }
+            if($embossDebossed_C==1){
+                $addedPrice = round($embossDebossed * $paper_quantity);
+                $Binding_price += $addedPrice;
+                $Binding_txt.= $addedPrice.'(Emboss),';
+            }
+            if($texturedEffect_C==1){
+                $addedPrice = round($texturedEffect * $totalArea);
+                $Binding_price += $addedPrice;
+                $Binding_txt.= $addedPrice.'(Textured),';
+            }
+            if($foilStamping_C==1){
+                $addedPrice = round($foilStamping * $quantity);
+                $Binding_price += $addedPrice;
+                $Binding_txt.= $addedPrice.'(Foil),';
+            }
+            if($gluedcost_C==1){
+                $addedPrice = round($gluedcost * $totalArea);
+                $Binding_price += $addedPrice;
+                $Binding_txt.= $addedPrice.'(Glued),';
+            }
+            $fomula_txt .='Binding cost: '.$Binding_price . '= '.$Binding_txt.'<br>';
+
+            $finalCost = $printpaperCost + $printingPrice + $Binding_price;
+
+            $fomula_txt .='Final Cost: '.$finalCost.' = '.$printpaperCost.' + '.$printingPrice . ' + '.$Binding_price.'<br>';
+
+            // $fomula_txt .='Paper Final cost: '.($printpapersizeWidth/1000).' * '.($max_height/1000).' * '.$paper_quantity.' * '. $paperCost. ' * '.($material2 / 1000).' = '.$returncost.'<br>';
+
+            
+            $fomula_txt .=`</p>
+            </div>`;
+            $data = ["success"=>'true'];
+
+            $data['cost'] = $finalCost;
+            $data['formula'] = $fomula_txt;
+
+            return response()->json($fomula_txt)->header('Content-Type', 'text/html');
+            // return response()->json($data)->header('Access-Control-Allow-Origin', '*');
+            // return view('paperbox')->with('data',$data);
+        }
+        
+        // return view('paperbox' ,['data'=>$data]);
+
+    }
+    public function storeShippingbox(Request $request){
+        $fomula_txt = `<div class="formula-area col-6">
+        <p style="font-size:1.2rem; font-weight:bold;">
+        ----- CALCULATION FOMULA ----- <br><br>`;
+        $input = $request->all();
+        $L = intval($input['productSize1']);
+        $W = intval($input['productSize2']);
+        $H = intval($input['productSize3']);
+        $quantity = intval($input['printQuantity1']);
+        $material1 = $input['material1'];
+        $material2 = intval($input['material2']);
+        $material3 = intval($input['material3']);
+        
+        $gludeSize = intval($input['gluedSize']);
+        $flapSize = intval($input['flapSize']);
+        $bleedSize = intval($input['bleedSize']);
+        $fixedSize = intval($input['fixedSize']); 
+
+        $print1PaperSizeW = intval($input['print1PaperSizeW']);
+        $print1PaperSizeH = intval($input['print1PaperSizeH']);
+        $print2PaperSizeW = intval($input['print2PaperSizeW']);
+        $print2PaperSizeH = intval($input['print2PaperSizeH']);
+        
+        $paperwastageNumber = intval($input['paperwastageNumber']);
+        $paperCost = intval($input['paperCost']);
+
+        // Printing setting parameters
+        $pintingbelow3000 = $input['pintingbelow3000'];
+        $printingper1000 = $input['printingper1000'];
+        $brownkindprice = $input['brownkindprice'];
+        $whitekindprice = $input['whitekindprice'];
+
+        // Binding setting parameters
+        $glossLamination = (float)$input['glossLamination'];
+        $mattLamination = (float)$input['mattLamination'];
+        $aqueousVarnishing = (float)$input['aqueousVarnishing'];
+        $uvCoating = (float)$input['uvCoating'];
+        $dieCut = (float)$input['dieCut'];
+        $spotUV = (float)$input['spotUV'];
+        $embossDebossed = (float)$input['embossDebossed'];
+        $texturedEffect = (float)$input['texturedEffect'];
+        $foilStamping = (float)$input['foilStamping'];
+        $gluedcost = (float)$input['gluedcost'];
+
+        //Binding User setting
+
+        $glossLamination_C = $input['glossLamination_C'];
+        $mattLamination_C = $input['mattLamination_C'];
+        $aqueousVarnishing_C = $input['aqueousVarnishing_C'];
+        $uvCoating_C = $input['uvCoating_C'];
+        $dieCut_C = 1;//$input['dieCut_C'];
+        $spotUV_C = $input['spotUV_C'];
+        $embossDebossed_C = $input['embossDebossed_C'];
+        $texturedEffect_C = $input['texturedEffect_C'];
+        $foilStamping_C = $input['foilStamping_C'];
+        $gluedcost_C = 1;//$input['gluedcost_C'];
+
+        $flat_size1 = $L + $H * 4 + $gludeSize + 2 * $bleedSize;
+        $flat_size2 = ($H + $W)*2 + $H + 2 * $bleedSize;
+
+        $fomula_txt .='Die Cut Width (mm):  '.$L.' + '.$H.' * 4 + '.$gludeSize.' + 2 * '.$bleedSize.' = '.$flat_size1.'<br>';
+        $fomula_txt .='Die Cut Height(mm):  ('.$H.' + '.$W.')*2 + '.$H.' + 2 * '.$bleedSize.' = '.$flat_size2.'<br>';
+        
+        // case 1: 889*658
+        $fumula_maximum_txt = '';
+        $printplatepapersize = [
+            "0"=>[
+                "0" => $print1PaperSizeW,
+                "1" => $print1PaperSizeH
+            ],
+            "1" =>[
+                "0" => $print2PaperSizeW,
+                "1" => $print2PaperSizeH
+            ]
+            ];
+        $max_case = 0;
+        $max_number1 = 0;
+        $max_number2 = 0;
+        $max_criteria = $printplatepapersize["0"]["0"] * $printplatepapersize["0"]["1"];
+        // case 11:
+        $number1 = floor(($printplatepapersize["0"]["0"] - 2 * $bleedSize)/($flat_size1));
+        $number2 = floor(($printplatepapersize["0"]["1"] - $fixedSize  - 2 * $bleedSize)/($flat_size2));
+        if($number1 == 0 || $number2 == 0)
+            $c_criteria = 9999999999;
+        else
+            $c_criteria = $printplatepapersize["0"]["0"] * (($flat_size2 + $bleedSize)*$number2+$fixedSize + $bleedSize) / ($number1 * $number2);
+            $fomula_txt .='case 1: '.intval($c_criteria).' = '.$printplatepapersize["0"]["0"].' * '.(($flat_size2)*$number2+$fixedSize+ 2*$bleedSize).' / '. ($number1 * $number2).'<br>';
+            if( $max_criteria > $c_criteria){
+                $max_width = ($flat_size1) * $number1 + 2*$bleedSize;
+                $max_height = ($flat_size2) * $number2 + $fixedSize+ 2*$bleedSize;
+                $max_case = 1;
+                $max_criteria = $c_criteria;
+                $max_number1 = $number1;
+                $max_number2 = $number2;
+                $fumula_maximum_txt = 'Optimized result Case 1 : '.$number1 .' * '.$number2.' = '.($number1 * $number2).'  in '.$printplatepapersize["0"]["0"].' * '. $max_height.'<br>';
+                $fumula_maximum_txt .= 'Paper plate width: '.$flat_size1.' * '.$number1.' + 2 * '.$bleedSize.' = '.$max_width.'<br>';
+                $fumula_maximum_txt .= 'Paper plate height: '.$flat_size2.' * '.$number2.' + 2 * '.$bleedSize.' + '.$fixedSize.' = '.$max_height.'<br>';
+            }
+        // case 12:
+        $number1 = floor(($printplatepapersize["0"]["0"] - 2 * $bleedSize)/($flat_size2 + $bleedSize));
+        $number2 = floor(($printplatepapersize["0"]["1"] - $fixedSize  - 2 * $bleedSize)/($flat_size1));
+        if($number1 == 0 || $number2 == 0)
+            $c_criteria = 9999999999;
+        else
+            $c_criteria = $printplatepapersize["0"]["0"] * (($flat_size1 + $bleedSize)*$number2+$fixedSize + $bleedSize) / ($number1 * $number2);
+            $fomula_txt .='case 2: '.intval($c_criteria).' = '.$printplatepapersize["0"]["0"].' * '.(($flat_size1)*$number2+$fixedSize+ 2*$bleedSize).' / '. ($number1 * $number2).'<br>';
+            if( $max_criteria > $c_criteria){
+                $max_width = ($flat_size2) * $number1 + 2*$bleedSize;
+                $max_height = ($flat_size1) * $number2 + $fixedSize+ 2*$bleedSize;
+                $max_case = 2;
+                $max_criteria = $c_criteria;
+                $max_number1 = $number1;
+                $max_number2 = $number2;
+                $fumula_maximum_txt = 'Optimized result Case 2 : '.$number1 .' * '.$number2.' = '.($number1 * $number2).'  in '.$printplatepapersize["0"]["0"].' * '. $max_height.'<br>';
+                $fumula_maximum_txt .= 'Paper plate width: '.$flat_size2.' * '.$number1.' + 2 * '.$bleedSize.' = '.$max_width.'<br>';
+                $fumula_maximum_txt .= 'Paper plate height: '.$flat_size1.' * '.$number2.' + 2 * '.$bleedSize.' + '.$fixedSize.' = '.$max_height.'<br>';
+                
+            }
+        // case 21:
+        $number1 = floor(($printplatepapersize["1"]["0"] - 2 * $bleedSize)/($flat_size1));
+        $number2 = floor(($printplatepapersize["1"]["1"] - $fixedSize - 2 * $bleedSize)/($flat_size2));
+        if($number1 == 0 || $number2 == 0)
+            $c_criteria = 9999999999;
+        else
+            $c_criteria = $printplatepapersize["1"]["0"] * (($flat_size2 + $bleedSize)*$number2+$fixedSize + $bleedSize) / ($number1 * $number2);
+            $fomula_txt .='case 3: '.intval($c_criteria).' = '.$printplatepapersize["1"]["0"].' * '.(($flat_size2)*$number2+$fixedSize+ 2*$bleedSize).' / '. ($number1 * $number2).'<br>';
+            if( $max_criteria > $c_criteria){
+                $max_width = ($flat_size1) * $number1 + 2*$bleedSize;
+                $max_height = ($flat_size2) * $number2 + $fixedSize+ 2*$bleedSize;
+                $max_case = 3;
+                $max_criteria = $c_criteria;
+                $max_number1 = $number1;
+                $max_number2 = $number2;
+                $fumula_maximum_txt = 'Optimized result Case 3 : '.$number1 .' * '.$number2.' = '.($number1 * $number2).'  in '.$printplatepapersize["1"]["0"].' * '. $max_height.'<br>';
+                $fumula_maximum_txt .= 'Paper plate width: '.$flat_size1.' * '.$number1.' + 2 * '.$bleedSize.' = '.$max_width.'<br>';
+                $fumula_maximum_txt .= 'Paper plate height: '.$flat_size2.' * '.$number2.' + 2 * '.$bleedSize.' + '.$fixedSize.' = '.$max_height.'<br>';
+                
+            }
+        // case 22:
+        $number1 = floor(($printplatepapersize["1"]["0"] - 2 * $bleedSize)/($flat_size2));
+        $number2 = floor(($printplatepapersize["1"]["1"] - $fixedSize - 2 * $bleedSize)/($flat_size1));
+        if($number1 == 0 || $number2 == 0)
+            $c_criteria = 9999999999;
+        else
+            $c_criteria = $printplatepapersize["1"]["0"] * (($flat_size1)*$number2+$fixedSize + 2*$bleedSize) / ($number1 * $number2);
+            $fomula_txt .='case 4: '.intval($c_criteria).' = '.$printplatepapersize["1"]["0"].' * '.(($flat_size1)*$number2+$fixedSize+ 2*$bleedSize).' / '. ($number1 * $number2).'<br>';
+            if( $max_criteria > $c_criteria){
+                $max_width = ($flat_size2) * $number1 + 2*$bleedSize;
+                $max_height = ($flat_size1) * $number2 + $fixedSize+ 2*$bleedSize;
+                $max_case = 4;
+                $max_criteria = $c_criteria;
+                $max_number1 = $number1;
+                $max_number2 = $number2;
+                $fumula_maximum_txt = 'Optimized result Case 4 : '.$number1 .' * '.$number2.' = '.($number1 * $number2).'  in '.$printplatepapersize["1"]["0"].' * '. $max_height.'<br>';
+                $fumula_maximum_txt .= 'Paper plate width: '.$flat_size2.' * '.$number1.' + 2 * '.$bleedSize.' = '.$max_width.'<br>';
+                $fumula_maximum_txt .= 'Paper plate height: '.$flat_size1.' * '.$number2.' + 2 * '.$bleedSize.' + '.$fixedSize.' = '.$max_height.'<br>';
+                
+            }
+
+        
+        if($max_number1 == 0 || $max_number2 == 0){
+            $data = ["success"=>'false'];
+            return response()->json($data);
+        }else{
+            $fomula_txt .= $fumula_maximum_txt;
+            $paper_quantity = ceil($quantity / ($max_number1 * $max_number2));
+            $fomula_txt .='Paper Quantity :  '.$quantity.' / '.($max_number1 * $max_number2).' = '. $paper_quantity;
+            if ($quantity <= 5000){
+                $paper_quantity += $paperwastageNumber;
+                $fomula_txt .= ' + '.$paperwastageNumber.' = '.$paper_quantity;
+            }
+            $fomula_txt .='<br>';    
+            if($max_case > 2) {
+                $printpapersizeWidth = $printplatepapersize["1"]["0"];
+                $printpapersizeHeight = $max_criteria / $printpapersizeWidth;
+            }else{
+                $printpapersizeWidth = $printplatepapersize["0"]["0"];
+                $printpapersizeHeight = $max_criteria / $printpapersizeWidth;
+            }
+            $printpapersize = $max_criteria * ($max_number1 * $max_number2);
+
+            $kindCost = $material3==1?$brownkindprice:$whitekindprice;
+
+            $printpaperCost = intval($printpapersize / 1000000 * $paper_quantity * ($paperCost  *  $material2 / 1000 + $kindCost));
+
+            $fomula_txt .='Paper cost: '.($printpapersizeWidth/1000).' * '.($max_height/1000).' * '.$paper_quantity.' * ('. $paperCost.' * '.($material2 / 1000).'+'.$kindCost.') = '.$printpaperCost.'<br>';
+
+            // Insert Printing price.
+            $printingPrice = $pintingbelow3000;
+            if($paper_quantity > 3000){
+                $printingPrice += ceil(($paper_quantity-3000)/1000) * $printingper1000;
+            }
+            $fomula_txt .='Printing cost: '.$printingPrice.'<br>';
+            // calculation total area
+            $totalArea = floatval($printpapersize / 1000000 * $paper_quantity);
+            $fomula_txt .='Total Area: '.$totalArea.' m^2 <br>';
+            $Binding_txt = '';
+            $Binding_price = 0;
+            if($glossLamination_C==1){
+                $Binding_price += round($glossLamination * $totalArea);
+                $Binding_txt.= $Binding_price.'(Gloss),';
+            }
+            if($mattLamination_C==1){
+                $addedPrice = round($mattLamination * $totalArea);
+                $Binding_price += $addedPrice;
+                $Binding_txt.= $addedPrice.'(Matt),';
+            }
+            if($aqueousVarnishing_C==1){
+                $addedPrice = round($aqueousVarnishing * $totalArea);
+                $Binding_price += $addedPrice;
+                $Binding_txt.= $addedPrice.'(Aqueous),';
+            }
+            if($uvCoating_C==1){
+                $addedPrice = round($uvCoating * $totalArea);
+                $Binding_price += $addedPrice;
+                $Binding_txt.= $addedPrice.'(UV),';
+            }
+            if($dieCut_C==1){
+                $addedPrice = round($dieCut * $paper_quantity);
+                $Binding_price += $addedPrice;
+                $Binding_txt.= $addedPrice.'(Diecut),';
+            }
+            if($spotUV_C==1){
+                $addedPrice = round($spotUV * $quantity);
+                $Binding_price += $addedPrice;
+                $Binding_txt.= $addedPrice.'(SpotUV),';
+            }
+            if($embossDebossed_C==1){
+                $addedPrice = round($embossDebossed * $paper_quantity);
+                $Binding_price += $addedPrice;
+                $Binding_txt.= $addedPrice.'(Emboss),';
+            }
+            if($texturedEffect_C==1){
+                $addedPrice = round($texturedEffect * $totalArea);
+                $Binding_price += $addedPrice;
+                $Binding_txt.= $addedPrice.'(Textured),';
+            }
+            if($foilStamping_C==1){
+                $addedPrice = round($foilStamping * $quantity);
+                $Binding_price += $addedPrice;
+                $Binding_txt.= $addedPrice.'(Foil),';
+            }
+            if($gluedcost_C==1){
+                $addedPrice = round($gluedcost * $totalArea);
+                $Binding_price += $addedPrice;
+                $Binding_txt.= $addedPrice.'(Glued),';
+            }
+            $fomula_txt .='Binding cost: '.$Binding_price . '= '.$Binding_txt.'<br>';
+
+            $finalCost = $printpaperCost + $printingPrice + $Binding_price;
+
+            $fomula_txt .='Final Cost: '.$finalCost.' = '.$printpaperCost.' + '.$printingPrice . ' + '.$Binding_price.'<br>';
+
+            // $fomula_txt .='Paper Final cost: '.($printpapersizeWidth/1000).' * '.($max_height/1000).' * '.$paper_quantity.' * '. $paperCost. ' * '.($material2 / 1000).' = '.$returncost.'<br>';
+
+            
+            $fomula_txt .=`</p>
+            </div>`;
+            $data = ["success"=>'true'];
+
+            $data['cost'] = $finalCost;
+            $data['formula'] = $fomula_txt;
+
+            return response()->json($fomula_txt)->header('Content-Type', 'text/html');
+            // return response()->json($data)->header('Access-Control-Allow-Origin', '*');
+            // return view('paperbox')->with('data',$data);
+        }
+        
+        // return view('paperbox' ,['data'=>$data]);
+
+    }
+    public function storeRigidbox(Request $request){
+        $fomula_txt = `<div class="formula-area col-6">
+        <p style="font-size:1.2rem; font-weight:bold;">
+        ----- CALCULATION FOMULA ----- <br><br>`;
+        $input = $request->all();
+        $L = intval($input['productSize1']);
+        $W = intval($input['productSize2']);
+        $H = intval($input['productSize3']);
+        $quantity = intval($input['printQuantity1']);
+        $material1 = $input['material1'];
+        $material2 = intval($input['material2']);
+        $material3 = intval($input['material3']);
+        
+        $gludeSize = intval($input['gluedSize']);
+        $flapSize = intval($input['flapSize']);
+        $bleedSize = intval($input['bleedSize']);
+        $fixedSize = intval($input['fixedSize']); 
+
+        $print1PaperSizeW = intval($input['print1PaperSizeW']);
+        $print1PaperSizeH = intval($input['print1PaperSizeH']);
+        $print2PaperSizeW = intval($input['print2PaperSizeW']);
+        $print2PaperSizeH = intval($input['print2PaperSizeH']);
+        
+        $paperwastageNumber = intval($input['paperwastageNumber']);
+        $paperCost = intval($input['paperCost']);
+
+        // Printing setting parameters
+        $pintingbelow3000 = $input['pintingbelow3000'];
+        $printingper1000 = $input['printingper1000'];
+        $brownkindprice = $input['brownkindprice'];
+        $whitekindprice = $input['whitekindprice'];
+
+        // Binding setting parameters
+        $glossLamination = (float)$input['glossLamination'];
+        $mattLamination = (float)$input['mattLamination'];
+        $aqueousVarnishing = (float)$input['aqueousVarnishing'];
+        $uvCoating = (float)$input['uvCoating'];
+        $dieCut = (float)$input['dieCut'];
+        $spotUV = (float)$input['spotUV'];
+        $embossDebossed = (float)$input['embossDebossed'];
+        $texturedEffect = (float)$input['texturedEffect'];
+        $foilStamping = (float)$input['foilStamping'];
+        $gluedcost = (float)$input['gluedcost'];
+
+        //Binding User setting
+
+        $glossLamination_C = $input['glossLamination_C'];
+        $mattLamination_C = $input['mattLamination_C'];
+        $aqueousVarnishing_C = $input['aqueousVarnishing_C'];
+        $uvCoating_C = $input['uvCoating_C'];
+        $dieCut_C = 1;//$input['dieCut_C'];
+        $spotUV_C = $input['spotUV_C'];
+        $embossDebossed_C = $input['embossDebossed_C'];
+        $texturedEffect_C = $input['texturedEffect_C'];
+        $foilStamping_C = $input['foilStamping_C'];
+        $gluedcost_C = 1;//$input['gluedcost_C'];
 
         $flat_size1 = $L + $H * 4 + $gludeSize + 2 * $bleedSize;
         $flat_size2 = ($H + $W)*2 + $H + 2 * $bleedSize;

@@ -180,7 +180,9 @@
         <a class="" href="/bubble">Bubble Mailer Bag</a>
         <a href="/poly">Poly Mailer Bag</a> 
         <a href="/paperbox">Paper Box</a>   
-        <a href="/mailerbox">Mailer Box</a>         
+        <a href="/mailerbox">Mailer Box</a>  
+        <a href="/shippingbox">Shipping Box</a>
+        <a href="/rigidbox">Rigid Box</a>       
       @endguest
     </div>
     <div class="content mt-5">

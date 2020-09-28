@@ -2,7 +2,7 @@
 @section('content')
 
 <!-- <div class="container"> -->
-    <form action="/mailerbox" method="post">
+    <form action="/rigidbox" method="post">
         @csrf
         <div class="container-fluid row m-0 p-0">
             <div class="col-lg-6">
@@ -378,7 +378,7 @@
         // alert('okay GC');
         console.log('please ajax!')
         $.ajax({
-            url: '{{ route("postmailerbox") }}',
+            url: '{{ route("postshippingbox") }}',
             method:"POST",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
