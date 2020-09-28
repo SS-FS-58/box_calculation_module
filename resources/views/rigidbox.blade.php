@@ -20,7 +20,7 @@
                         <input type="text" value="150" class="form-control" id="productSize2" name="productSize2">
                     </div>
                     <div class="col">
-                        <input type="text" value="50" class="form-control" id="productSize3" name="productSize3">
+                        <input type="text" value="80" class="form-control" id="productSize3" name="productSize3">
                     </div>
                 </div>
                 <div class="row">
@@ -47,10 +47,10 @@
                     <div class="col">
                         <div class="form-group">
                             <select class="form-control" id="Material1" name="material1">
-                                <option selected value="16">SBS</option>
-                                <!-- <option value="17">Kraft Paper</option>
-                                <option value="14">C2S</option>
-                                <option value="278">CCNB</option> -->
+                                <!-- <option selected value="16">SBS</option>
+                                <option value="17">Kraft Paper</option> -->
+                                <option selected value="14">C2S</option>
+                                <!-- <option value="278">CCNB</option> -->
                             </select>
                         </div>
                     </div>
@@ -58,8 +58,8 @@
                         <div class="form-group">
                             <select class="form-control" id="material2" name="material2">
                                 <!-- <option value="230">230</option> -->
-                                <option selected value="250">250</option>
-                                <option value="300">300</option>
+                                <option selected value="157">157</option>
+                                <!-- <option value="300">300</option> -->
                                 <!-- <option value="350">350</option> -->
                             </select>
                         </div>
@@ -76,8 +76,8 @@
                         <div class="form-group">
                             <select class="form-control" id="material3" name="material3">
                                 <!-- <option value="230">230</option> -->
-                                <option selected value="1">Flute and inner brown color paper</option>
-                                <option value="2">Flute and inner white color paper</option>
+                                <option selected value="1">Grey Board 1200gsm</option>
+                                <!-- <option value="2">Flute and inner white color paper</option> -->
                                 <!-- <option value="350">350</option> -->
                             </select>
                         </div>
@@ -207,16 +207,16 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <input type="text" value="889" class="form-control" id="print1PaperSizeW" name="print1PaperSizeW">
+                            <input type="text" value="880" class="form-control" id="print1PaperSizeW" name="print1PaperSizeW">
                         </div>
                         <div class="col">
-                            <input type="text" value="700" class="form-control" id="print1PaperSizeH" name="print1PaperSizeH">
+                            <input type="text" value="1184" class="form-control" id="print1PaperSizeH" name="print1PaperSizeH">
                         </div>
                         <div class="col">
-                            <input type="text" value="787" class="form-control" id="print2PaperSizeW" name="print2PaperSizeW">
+                            <input type="text" value="777" class="form-control" id="print2PaperSizeW" name="print2PaperSizeW">
                         </div>
                         <div class="col">
-                            <input type="text" value="700" class="form-control" id="print2PaperSizeH" name="print2PaperSizeH">
+                            <input type="text" value="1082" class="form-control" id="print2PaperSizeH" name="print2PaperSizeH">
                         </div>
                     </div>
                     <div class="row">
@@ -255,19 +255,15 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <label for="sel1">Flute and inner brown color paper RMB:</label>
+                            <label for="sel1">Grey Board 1200gsm RMB:</label>
                         </div>
-                        <div class="col">
-                            <label for="sel1">Flute and inner white color paper RMB: </label>
-                        </div>
+                        
                     </div>
                     <div class="row">
                         <div class="col">
-                            <input type="text" value="1.50" class="form-control" id="brownkindprice" name="brownkindprice">
+                            <input type="text" value="7000" class="form-control" id="greyboardprice" name="greyboardprice">
                         </div>
-                        <div class="col">
-                            <input type="text" value="2.00" class="form-control" id="whitekindprice" name="whitekindprice">
-                        </div>
+                        
                     </div>
                     <h4>Binding Setting</h4>
                     <div class="row">
@@ -308,7 +304,7 @@
                             <input type="text" value="0.60" class="form-control" id="uvCoating" name="uvCoating">
                         </div>
                         <div class="col">
-                            <input type="text" value="0.10" class="form-control" id="dieCut" name="dieCut">
+                            <input type="text" value="0.20" class="form-control" id="dieCut" name="dieCut">
                         </div>
                         <div class="col">
                             <input type="text" value="0.10" class="form-control" id="spotUV" name="spotUV">
@@ -343,7 +339,7 @@
                     </div>
                     <div class="row">
                         <div class="col-4">
-                            <input type="text" value="1.00" class="form-control" id="gluedcost" name="gluedcost">
+                            <input type="text" value="2.00" class="form-control" id="gluedcost" name="gluedcost">
                         </div>
                     </div>
                 </div>
@@ -378,7 +374,7 @@
         // alert('okay GC');
         console.log('please ajax!')
         $.ajax({
-            url: '{{ route("postshippingbox") }}',
+            url: '{{ route("postrigidbox") }}',
             method:"POST",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
