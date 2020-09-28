@@ -14,13 +14,13 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <input type="text" value="200" class="form-control" id="productSize1" name="productSize1">
+                        <input type="text" value="150" class="form-control" id="productSize1" name="productSize1">
                     </div>
                     <div class="col">
-                        <input type="text" value="150" class="form-control" id="productSize2" name="productSize2">
+                        <input type="text" value="100" class="form-control" id="productSize2" name="productSize2">
                     </div>
                     <div class="col">
-                        <input type="text" value="50" class="form-control" id="productSize3" name="productSize3">
+                        <input type="text" value="100" class="form-control" id="productSize3" name="productSize3">
                     </div>
                 </div>
                 <div class="row">
@@ -47,10 +47,10 @@
                     <div class="col">
                         <div class="form-group">
                             <select class="form-control" id="Material1" name="material1">
-                                <option selected value="16">SBS</option>
-                                <!-- <option value="17">Kraft Paper</option>
-                                <option value="14">C2S</option>
-                                <option value="278">CCNB</option> -->
+                                <!-- <option selected value="16">SBS</option>
+                                <option value="17">Kraft Paper</option>
+                                <option value="14">C2S</option> -->
+                                <option selected value="278">CCNB</option>
                             </select>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
                             <select class="form-control" id="material2" name="material2">
                                 <!-- <option value="230">230</option> -->
                                 <option selected value="250">250</option>
-                                <option value="300">300</option>
+                                <!-- <option value="300">300</option> -->
                                 <!-- <option value="350">350</option> -->
                             </select>
                         </div>
@@ -68,7 +68,7 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <label for="sel1">Kinds :</label>
+                        <label for="sel1">Printing types :</label>
                     </div>
                 </div>
                 <div class="row">
@@ -76,8 +76,8 @@
                         <div class="form-group">
                             <select class="form-control" id="material3" name="material3">
                                 <!-- <option value="230">230</option> -->
-                                <option selected value="1">Flute and inner brown color paper</option>
-                                <option value="2">Flute and inner white color paper</option>
+                                <option selected value="1">One color</option>
+                                <option value="2">Two color</option>
                                 <!-- <option value="350">350</option> -->
                             </select>
                         </div>
@@ -99,15 +99,13 @@
                             <label class="custom-control-label" for="mattLamination_C">Matt Lamination</label>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <!-- <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                         <div class="custom-control custom-checkbox">
                             <input type="hidden" name="aqueousVarnishing_C" value="0"/>
                             <input type="checkbox" class="custom-control-input" name="aqueousVarnishing_C" id="aqueousVarnishing_C" value="1">
                             <label class="custom-control-label" for="aqueousVarnishing_C">Aqueous Varnishing</label>
                         </div>
-                    </div>
-                </div>
-                <div class="row">
+                    </div> -->
                     <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                         <div class="custom-control custom-checkbox">
                             <input type="hidden" name="uvCoating_C" value="0"/>
@@ -115,13 +113,16 @@
                             <label class="custom-control-label" for="uvCoating_C">UV coating RMB</label>
                         </div>
                     </div>
-                    <!-- <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                </div>
+                <div class="row">
+                    
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                         <div class="custom-control custom-checkbox">
                             <input type="hidden" name="dieCut_C" value="0"/>
                             <input type="checkbox" class="custom-control-input" name="dieCut_C" id="dieCut_C" value="1">
                             <label class="custom-control-label" for="dieCut_C">Die cut RMB</label>
                         </div>
-                    </div> -->
+                    </div>
                     <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                         <div class="custom-control custom-checkbox">
                             <input type="hidden" name="spotUV_C" value="0"/>
@@ -153,16 +154,14 @@
                             <label class="custom-control-label" for="foilStamping_C">Foil Stamping</label>
                         </div>
                     </div>
-                </div>
-                <!-- <div class="row">
                     <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                         <div class="custom-control custom-checkbox">
-                            <input type="hidden" name="gluedcost_C" value="1"/>
-                            <input type="checkbox" checked class="custom-control-input" name="gluedcost_C" id="gluedcost_C" value="1">
+                            <input type="hidden" name="gluedcost_C" value="0"/>
+                            <input type="checkbox" class="custom-control-input" name="gluedcost_C" id="gluedcost_C" value="1">
                             <label class="custom-control-label" for="gluedcost_C">Glued Cost RMB</label>
                         </div>
                     </div>
-                </div> -->
+                </div>
                 <button id="submit" type="submit" class="btn btn-primary mt-3">Self quotation</button> 
             </div>
             <div class="col-lg-6 row" >
@@ -255,10 +254,10 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <label for="sel1">Flute and inner brown color paper RMB:</label>
+                            <label for="sel1">One color printing RMB:</label>
                         </div>
                         <div class="col">
-                            <label for="sel1">Flute and inner white color paper RMB: </label>
+                            <label for="sel1">Two color printing RMB: </label>
                         </div>
                     </div>
                     <div class="row">

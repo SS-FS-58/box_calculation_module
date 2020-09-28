@@ -85,13 +85,13 @@
                 </div>
                 <h4>Binding</h4>
                 <div class="row">
-                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <!-- <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                         <div class="custom-control custom-checkbox">
                             <input type="hidden" name="glossLamination_C" value="0"/>
                             <input type="checkbox" class="custom-control-input" name="glossLamination_C" id="glossLamination_C" value="1">
                             <label class="custom-control-label" for="glossLamination_C">Gloss Lamination</label>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                         <div class="custom-control custom-checkbox">
                             <input type="hidden" name="mattLamination_C" value="0"/>
@@ -106,8 +106,6 @@
                             <label class="custom-control-label" for="aqueousVarnishing_C">Aqueous Varnishing</label>
                         </div>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                         <div class="custom-control custom-checkbox">
                             <input type="hidden" name="uvCoating_C" value="0"/>
@@ -115,6 +113,9 @@
                             <label class="custom-control-label" for="uvCoating_C">UV coating RMB</label>
                         </div>
                     </div>
+                </div>
+                <div class="row">
+                    
                     <!-- <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                         <div class="custom-control custom-checkbox">
                             <input type="hidden" name="dieCut_C" value="0"/>
@@ -136,9 +137,6 @@
                             <label class="custom-control-label" for="embossDebossed_C">Emboss Debossed</label>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    
                     <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                         <div class="custom-control custom-checkbox">
                             <input type="hidden" name="texturedEffect_C" value="0"/>
@@ -146,6 +144,10 @@
                             <label class="custom-control-label" for="texturedEffect_C">Textured Effect</label>
                         </div>
                     </div>
+                </div>
+                <div class="row">
+                    
+                    
                     <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                         <div class="custom-control custom-checkbox">
                             <input type="hidden" name="foilStamping_C" value="0"/>

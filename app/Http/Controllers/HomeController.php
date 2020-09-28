@@ -414,7 +414,7 @@ class HomeController extends Controller
             if($aqueousVarnishing_C==1){
                 $addedPrice = intval($aqueousVarnishing * $totalArea);
                 $Binding_price += $addedPrice;
-                $Binding_txt.= $addedPrice.'(Aqueous),';
+                $Binding_txt.= $addedPrice.'(Aqueous Varnishing),';
             }
             if($uvCoating_C==1){
                 $addedPrice = intval($uvCoating * $totalArea);
@@ -680,7 +680,7 @@ class HomeController extends Controller
             if($aqueousVarnishing_C==1){
                 $addedPrice = round($aqueousVarnishing * $totalArea);
                 $Binding_price += $addedPrice;
-                $Binding_txt.= $addedPrice.'(Aqueous),';
+                $Binding_txt.= $addedPrice.'(Aqueous Varnishing),';
             }
             if($uvCoating_C==1){
                 $addedPrice = round($uvCoating * $totalArea);
@@ -789,20 +789,20 @@ class HomeController extends Controller
 
         $glossLamination_C = $input['glossLamination_C'];
         $mattLamination_C = $input['mattLamination_C'];
-        $aqueousVarnishing_C = $input['aqueousVarnishing_C'];
+        $aqueousVarnishing_C = 1;//$input['aqueousVarnishing_C'];
         $uvCoating_C = $input['uvCoating_C'];
-        $dieCut_C = 1;//$input['dieCut_C'];
+        $dieCut_C = $input['dieCut_C'];
         $spotUV_C = $input['spotUV_C'];
         $embossDebossed_C = $input['embossDebossed_C'];
         $texturedEffect_C = $input['texturedEffect_C'];
         $foilStamping_C = $input['foilStamping_C'];
-        $gluedcost_C = 1;//$input['gluedcost_C'];
+        $gluedcost_C = $input['gluedcost_C'];
 
-        $flat_size1 = $L + $H * 4 + $gludeSize + 2 * $bleedSize;
-        $flat_size2 = ($H + $W)*2 + $H + 2 * $bleedSize;
+        $flat_size1 = ($L + $W + 80) * 2 ;
+        $flat_size2 = $H + $W + 50;
 
-        $fomula_txt .='Die Cut Width (mm):  '.$L.' + '.$H.' * 4 + '.$gludeSize.' + 2 * '.$bleedSize.' = '.$flat_size1.'<br>';
-        $fomula_txt .='Die Cut Height(mm):  ('.$H.' + '.$W.')*2 + '.$H.' + 2 * '.$bleedSize.' = '.$flat_size2.'<br>';
+        $fomula_txt .='Die Cut Width (mm):  ('.$L.' + '.$W.' + 80) * 2 = '.$flat_size1.'<br>';
+        $fomula_txt .='Die Cut Height(mm):  '.$H.' + '.$W.' + 50 = '.$flat_size2.'<br>';
         
         // case 1: 889*658
         $fumula_maximum_txt = '';
@@ -951,7 +951,7 @@ class HomeController extends Controller
             if($aqueousVarnishing_C==1){
                 $addedPrice = round($aqueousVarnishing * $totalArea);
                 $Binding_price += $addedPrice;
-                $Binding_txt.= $addedPrice.'(Aqueous),';
+                $Binding_txt.= $addedPrice.'(Aqueous Varnishing),';
             }
             if($uvCoating_C==1){
                 $addedPrice = round($uvCoating * $totalArea);
@@ -1041,8 +1041,8 @@ class HomeController extends Controller
         // Printing setting parameters
         $pintingbelow3000 = $input['pintingbelow3000'];
         $printingper1000 = $input['printingper1000'];
-        $brownkindprice = $input['brownkindprice'];
-        $whitekindprice = $input['whitekindprice'];
+        $greyboardprice = $input['greyboardprice']/1000;
+        // $whitekindprice = $input['whitekindprice'];
 
         // Binding setting parameters
         $glossLamination = (float)$input['glossLamination'];
@@ -1100,15 +1100,15 @@ class HomeController extends Controller
             $c_criteria = $printplatepapersize["0"]["0"] * $printplatepapersize["0"]["1"] / ($number1 * $number2);
             $fomula_txt .='case 1: '.intval($c_criteria).' = '.$printplatepapersize["0"]["0"].' * '.$printplatepapersize["0"]["1"].' / '. ($number1 * $number2).'<br>';
             if( $max_criteria > $c_criteria){
-                $max_width = ($flat_size1) * $number1 + 2*$bleedSize;
-                $max_height = ($flat_size2) * $number2 + $fixedSize+ 2*$bleedSize;
+                $max_width = ($flat_size1) * $number1 ;
+                $max_height = ($flat_size2) * $number2 ;
                 $max_case = 1;
                 $max_criteria = $c_criteria;
                 $max_number1 = $number1;
                 $max_number2 = $number2;
                 $fumula_maximum_txt = 'Optimized result Case 1 : '.$number1 .' * '.$number2.' = '.($number1 * $number2).'  in '.$printplatepapersize["0"]["0"].' * '.$printplatepapersize["0"]["1"].'<br>';
-                $fumula_maximum_txt .= 'Paper plate width: '.$flat_size1.' * '.$number1.' + 2 * '.$bleedSize.' = '.$max_width.'<br>';
-                $fumula_maximum_txt .= 'Paper plate height: '.$flat_size2.' * '.$number2.' + 2 * '.$bleedSize.' + '.$fixedSize.' = '.$max_height.'<br>';
+                $fumula_maximum_txt .= 'Paper plate width: '.$flat_size1.' * '.$number1.' = '.$max_width.'<br>';
+                $fumula_maximum_txt .= 'Paper plate height: '.$flat_size2.' * '.$number2.' = '.$max_height.'<br>';
             }
         // case 12:
         $number1 = floor(($printplatepapersize["0"]["0"] )/($flat_size2 + $bleedSize));
@@ -1118,15 +1118,15 @@ class HomeController extends Controller
             $c_criteria = $printplatepapersize["0"]["0"] * $printplatepapersize["0"]["1"] / ($number1 * $number2);
             $fomula_txt .='case 2: '.intval($c_criteria).' = '.$printplatepapersize["0"]["0"].' * '.$printplatepapersize["0"]["1"].' / '. ($number1 * $number2).'<br>';
             if( $max_criteria > $c_criteria){
-                $max_width = ($flat_size2) * $number1 + 2*$bleedSize;
-                $max_height = ($flat_size1) * $number2 + $fixedSize+ 2*$bleedSize;
+                $max_width = ($flat_size2) * $number1 ;
+                $max_height = ($flat_size1) * $number2 ;
                 $max_case = 2;
                 $max_criteria = $c_criteria;
                 $max_number1 = $number1;
                 $max_number2 = $number2;
                 $fumula_maximum_txt = 'Optimized result Case 2 : '.$number1 .' * '.$number2.' = '.($number1 * $number2).'  in '.$printplatepapersize["0"]["0"].' * '. $printplatepapersize["0"]["1"].'<br>';
-                $fumula_maximum_txt .= 'Paper plate width: '.$flat_size2.' * '.$number1.' + 2 * '.$bleedSize.' = '.$max_width.'<br>';
-                $fumula_maximum_txt .= 'Paper plate height: '.$flat_size1.' * '.$number2.' + 2 * '.$bleedSize.' + '.$fixedSize.' = '.$max_height.'<br>';
+                $fumula_maximum_txt .= 'Paper plate width: '.$flat_size2.' * '.$number1.' = '.$max_width.'<br>';
+                $fumula_maximum_txt .= 'Paper plate height: '.$flat_size1.' * '.$number2.' = '.$max_height.'<br>';
                 
             }
         // case 21:
@@ -1138,15 +1138,15 @@ class HomeController extends Controller
             $c_criteria = $printplatepapersize["1"]["0"] * $printplatepapersize["1"]["1"] / ($number1 * $number2);
             $fomula_txt .='case 3: '.intval($c_criteria).' = '.$printplatepapersize["1"]["0"].' * '.$printplatepapersize["1"]["1"].' / '. ($number1 * $number2).'<br>';
             if( $max_criteria > $c_criteria){
-                $max_width = ($flat_size1) * $number1 + 2*$bleedSize;
-                $max_height = ($flat_size2) * $number2 + $fixedSize+ 2*$bleedSize;
+                $max_width = ($flat_size1) * $number1;
+                $max_height = ($flat_size2) * $number2;
                 $max_case = 3;
                 $max_criteria = $c_criteria;
                 $max_number1 = $number1;
                 $max_number2 = $number2;
                 $fumula_maximum_txt = 'Optimized result Case 3 : '.$number1 .' * '.$number2.' = '.($number1 * $number2).'  in '.$printplatepapersize["1"]["0"].' * '. $printplatepapersize["1"]["1"].'<br>';
-                $fumula_maximum_txt .= 'Paper plate width: '.$flat_size1.' * '.$number1.' + 2 * '.$bleedSize.' = '.$max_width.'<br>';
-                $fumula_maximum_txt .= 'Paper plate height: '.$flat_size2.' * '.$number2.' + 2 * '.$bleedSize.' + '.$fixedSize.' = '.$max_height.'<br>';
+                $fumula_maximum_txt .= 'Paper plate width: '.$flat_size1.' * '.$number1.' = '.$max_width.'<br>';
+                $fumula_maximum_txt .= 'Paper plate height: '.$flat_size2.' * '.$number2.' = '.$max_height.'<br>';
                 
             }
         // case 22:
@@ -1158,15 +1158,15 @@ class HomeController extends Controller
             $c_criteria = $printplatepapersize["1"]["0"] * $printplatepapersize["1"]["1"] / ($number1 * $number2);
             $fomula_txt .='case 4: '.intval($c_criteria).' = '.$printplatepapersize["1"]["0"].' * '.$printplatepapersize["1"]["1"].' / '. ($number1 * $number2).'<br>';
             if( $max_criteria > $c_criteria){
-                $max_width = ($flat_size2) * $number1 + 2*$bleedSize;
-                $max_height = ($flat_size1) * $number2 + $fixedSize+ 2*$bleedSize;
+                $max_width = ($flat_size2) * $number1 ;
+                $max_height = ($flat_size1) * $number2;
                 $max_case = 4;
                 $max_criteria = $c_criteria;
                 $max_number1 = $number1;
                 $max_number2 = $number2;
                 $fumula_maximum_txt = 'Optimized result Case 4 : '.$number1 .' * '.$number2.' = '.($number1 * $number2).'  in '.$printplatepapersize["1"]["0"].' * '. $printplatepapersize["1"]["1"].'<br>';
-                $fumula_maximum_txt .= 'Paper plate width: '.$flat_size2.' * '.$number1.' + 2 * '.$bleedSize.' = '.$max_width.'<br>';
-                $fumula_maximum_txt .= 'Paper plate height: '.$flat_size1.' * '.$number2.' + 2 * '.$bleedSize.' + '.$fixedSize.' = '.$max_height.'<br>';
+                $fumula_maximum_txt .= 'Paper plate width: '.$flat_size2.' * '.$number1.' = '.$max_width.'<br>';
+                $fumula_maximum_txt .= 'Paper plate height: '.$flat_size1.' * '.$number2.' = '.$max_height.'<br>';
                 
             }
 
@@ -1192,11 +1192,11 @@ class HomeController extends Controller
             }
             $printpapersize = $max_criteria * ($max_number1 * $max_number2);
 
-            $kindCost = $material3==1?$brownkindprice:$whitekindprice;
+            $kindCost = $greyboardprice;
 
             $printpaperCost = intval($printpapersize / 1000000 * $paper_quantity * ($paperCost  *  $material2 / 1000 + $kindCost));
 
-            $fomula_txt .='Paper cost: '.($printpapersizeWidth/1000).' * '.($max_height/1000).' * '.$paper_quantity.' * ('. $paperCost.' * '.($material2 / 1000).'+'.$kindCost.') = '.$printpaperCost.'<br>';
+            $fomula_txt .='Paper cost: '.($printpapersizeWidth/1000).' * '.($printpapersizeHeight/1000).' * '.$paper_quantity.' * ('. $paperCost.' * '.($material2 / 1000).'+'.$kindCost.') = '.$printpaperCost.'<br>';
 
             // Insert Printing price.
             $printingPrice = $pintingbelow3000;
@@ -1221,7 +1221,7 @@ class HomeController extends Controller
             if($aqueousVarnishing_C==1){
                 $addedPrice = round($aqueousVarnishing * $totalArea);
                 $Binding_price += $addedPrice;
-                $Binding_txt.= $addedPrice.'(Aqueous),';
+                $Binding_txt.= $addedPrice.'(Aqueous Varnishing),';
             }
             if($uvCoating_C==1){
                 $addedPrice = round($uvCoating * $totalArea);
