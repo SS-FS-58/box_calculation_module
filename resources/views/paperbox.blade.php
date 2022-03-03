@@ -289,6 +289,8 @@
                         </div>
                     </div>
                 </div>
+                <button id="save" type="button" class="btn btn-primary mt-3">save</button> 
+                <button id="load" type="button" class="btn btn-primary mt-3">Load</button>
             </div>
         </div>
     </form>
@@ -297,28 +299,6 @@
 <script>
     $( "form" ).on( "submit", function( event ) {
         event.preventDefault()
-        
-        // alert('prevent');
-        // var ua = window.navigator.userAgent;
-        // var msie = ua.indexOf("MSIE ");
-        // if (msie > 0) {
-        //     // Use Microsoft XDR
-        //     alert('okay IE');
-        //     var xdr = new XDomainRequest();
-        //     xdr.open("POST", '{{ route("postpaperbox") }}');
-        //     xdr.onload = function () {
-        //     var JSON = $.parseJSON(xdr.responseText);
-        //     if (JSON == null || typeof (JSON) == 'undefined')
-        //     {
-        //         JSON = $.parseJSON(data.firstChild.textContent);
-        //     }
-        //     alert(JSON);
-        //     displayresponse(JSON);  
-        //     };
-        //     xdr.send();
-        // } else {
-        // alert('okay GC');
-        console.log('please ajax!')
         $.ajax({
             url: '{{ route("postpaperbox") }}',
             method:"POST",
@@ -372,33 +352,60 @@
         });
         // }
     });
-    function displayresponse(data){
-        $(".loader").css("display","none");
-        let print_quantity = $('#printQuantity1').val();
-        html = `
-        <div class='row container-fluid  mx-auto'>
-            <table class='table table-bordered col-6'>
-                <thead>
-                    <tr>
-                        <th>Quantity</th>
-                        <th>Full amount (yuan)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>`+ parseInt(print_quantity) + `</td>
-                        <td>`+ parseInt(data) +`</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="formula-area col-6">
-                <p style="font-size:1.2rem; font-weight:bold;">` + parseInt(data) + `</p>
-            </div>
-        </div>
-        `;
-        
-        $('#ajaxdata').html(html);
-    }
+    $( "#save" ).click(function() {
+        event.preventDefault()
+        $.ajax({
+            url: '{{ route("postpaperboxsettings") }}',
+            method:"POST",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data:$(this).serialize(),
+            dataType:"json",
+            beforeSend:function()
+            {
+                $(".loader").css("display","flex");
+            },
+            success:function(data)
+            {
+                $(".loader").css("display","none");
+                console.log('data',data);
+                let print_quantity = $('#printQuantity1').val();
+                if(data.success == false){
+                    html = `
+                        <div class='row container-fluid  mx-auto'>
+                            
+                            <div class="formula-area col-6">
+                                <p style="font-size:1.2rem; font-weight:bold;">` + "Size error" + `</p>
+                            </div>
+                        </div>
+                        `;
+                }
+                else{
+                    html = `
+                        <div class='row container-fluid  mx-auto'>
+                            
+                            <div class="formula-area col-6">
+                                <p style="font-size:1.2rem; font-weight:bold;">` + data + `</p>
+                            </div>
+                        </div>
+                        `;
+                }
+                html = `
+                    <div class='row container-fluid  mx-auto'>
+                        
+                        <div class="formula-area col-6">
+                            <p style="font-size:1.2rem; font-weight:bold;">` + data + `</p>
+                        </div>
+                    </div>
+                    `;
+                $('#ajaxdata').html(html);
+                // displayresponse(data);                
+            }
+        });
+        // }
+    });
+    
     
 </script>
 @endsection

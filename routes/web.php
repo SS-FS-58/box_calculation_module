@@ -56,6 +56,8 @@ Route::post('/bubble','HomeController@storeBubble')->middleware('auth')->name('p
 Route::get('/poly','HomeController@showPoly')->middleware('auth')->name('getpoly');
 
 Route::post('/poly','HomeController@storePoly')->middleware('auth')->name('postpoly');
+
+
 Route::get('/paperbox','HomeController@showPaperbox')->middleware('auth')->name('getpaperbox');
 
 Route::post('/paperbox','HomeController@storePaperbox')->middleware('auth')->name('postpaperbox');
@@ -73,3 +75,7 @@ Route::post('/rigidbox','HomeController@storeRigidbox')->middleware('auth')->nam
 
 Route::get('/waleng','HomeController@showWaleng')->name('getwaleng');
 Route::post('/waleng','HomeController@storeWaleng')->name('postwaleng');
+
+//  backdesk setting forms
+
+Route::post('/backdeskSettings/paperBox','BackdeskSettingsController@postPaperBox')->middleware('auth')->name('postpaperboxsettings');

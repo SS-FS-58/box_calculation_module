@@ -142,7 +142,6 @@
                 "printingFee3":0.14,
                 "printingFee4":0.19,
                 "printingFee5":0.25,
-
                 "printigCur1":"YUAN",
                 "printigCur2":"YUAN",
                 "printigCur3":"YUAN",

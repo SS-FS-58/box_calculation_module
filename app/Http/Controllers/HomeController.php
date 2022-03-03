@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Package;
 use App\BubbleSetting;
 use App\PolySetting;
+use App\Models\PaperBoxSettings;
 use Carbon\Carbon;
 use App\Result;
 class HomeController extends Controller
@@ -175,6 +176,8 @@ class HomeController extends Controller
         $data = PolySetting::latest()->first();
         return view('poly' ,['data'=>$data]);
     }
+
+
 
     public function showPaperbox(){
         $data = PolySetting::latest()->first();
